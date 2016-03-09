@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Schema Owner: 	Safeway Inc
+   Date Created:      12 Jan 2016
+   Author:		Sai Nuthakki
+   Description: contains commonly used Safeway Purchase order schema.
+   Name: /SFWY/Nouns/SwyPurchaseOrder.xsd
+-->
+<!-- edited with XMLSpy v2016 sp1 (x64) (http://www.altova.com) by Jayson P. Soliman (Safeway Philtech inc) -->
+<xs:schema xmlns:oa="http://www.openapplications.org/oagis/9" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://collab.safeway.com/it/architecture/info/default.aspx" xmlns:altova="http://www.altova.com/xml-schema-extensions" targetNamespace="http://collab.safeway.com/it/architecture/info/default.aspx" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="../Global/SwyGlobalComponents.xsd"/>
+	<xs:include schemaLocation="../SwyMaster/SwyMasterComponents.xsd"/>
+	<xs:element name="SwyInventoryBalance">
+		<xs:annotation>
+			<xs:documentation>The SwyProductAvailability BOD contains information about product movement and availability. It can carry information both from DC and store level. </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InventoryBalanceHeader" type="InventoryBalanceHeaderType" minOccurs="0"/>
+				<xs:element name="InventoryBalanceDetail" type="InventoryBalanceDetailType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="InventoryBalanceHeaderType">
+		<xs:annotation>
+			<xs:documentation>This contains the header records coming from the 852 file. It carries the vendor, buyer, bill to and ship to information as well as the purchase order number and invoice number.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="DivisionID" minOccurs="0"/>
+			<xs:element name="PurchaseOrderNbr" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>System generated id that uniquely represent a purchase order document at division level.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvoiceNbr" type="xs:string" minOccurs="0"/>
+			<xs:element name="VendorParty" type="PartyType" minOccurs="0"/>
+			<xs:element name="BuyerParty" type="PartyType" minOccurs="0"/>
+			<xs:element name="ShiptoParty" type="PartyType" minOccurs="0"/>
+			<xs:element name="BilltoParty" type="PartyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InventoryBalanceDetailType">
+		<xs:annotation>
+			<xs:documentation>This object carries the different detailed information about product activity. It contains UPC code, purchase itemcode, different item movement type, quantity and effective date.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UPCID" type="xs:string" minOccurs="0"/>
+			<xs:element name="PurchaseItemCode" minOccurs="0"/>
+			<xs:element name="ItemPackQuantity" minOccurs="0"/>
+			<xs:element name="ItemSizeQuantity" minOccurs="0"/>
+			<xs:element name="UnitOfMeasurement" type="xs:string" minOccurs="0"/>
+			<xs:element name="UnitPriceAmount" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="ItemActivity" type="ItemActivityType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="FacilityQuantity" type="FacilityQuantityType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Describes the specific quantity of items to be delivered to what store.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ItemActivityType">
+		<xs:annotation>
+			<xs:documentation>Defines how the item is being represented. It can be stocks on hand, quantity on order, etc.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ItemActivityTypeCd" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Describes the type of item activity - it can represent either items that are: on hand (QA), items that are requested (QX), quantity on order (QP), quantity out of stock (QO), quantity sold (QS)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ItemQuantityMeasurement" type="ItemQuantityMeasurementType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Contains Promotion Order Quantity, stocks on hand, quantity on order and their respective units of measure and effective date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ItemQuantityMeasurementType">
+		<xs:annotation>
+			<xs:documentation>This object represents promotional order quantity and is defined along with item activity type. This carries item quantity, UOM and effective date.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ItemQuantity" type="xs:string" minOccurs="0"/>
+			<xs:element name="UnitOfMeasurement" type="xs:string" minOccurs="0"/>
+			<xs:element name="EffectiveDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FacilityQuantityType">
+		<xs:annotation>
+			<xs:documentation>Defines how many items will be delivered to a specific store.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Facility" type="FacilityType" minOccurs="0"/>
+			<xs:element name="Quantity" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

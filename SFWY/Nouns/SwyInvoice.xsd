@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Schema Owner: 	Safeway Inc
+   Date Created:      12 Jan 2016
+   Author:		Sai Nuthakki
+   Description: contains commonly used Safeway Purchase order schema.
+   Name: /SFWY/Nouns/SwyPurchaseOrder.xsd
+-->
+<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by Sai Nuthakki (Safeway, Inc.) -->
+<xs:schema xmlns:oa="http://www.openapplications.org/oagis/9" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://collab.safeway.com/it/architecture/info/default.aspx" xmlns:altova="http://www.altova.com/xml-schema-extensions" targetNamespace="http://collab.safeway.com/it/architecture/info/default.aspx" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="../Global/SwyGlobalComponents.xsd"/>
+	<xs:include schemaLocation="../SwyMaster/SwyMasterComponents.xsd"/>
+	<xs:element name="SwyInvoice">
+		<xs:annotation>
+			<xs:documentation>Standard Safeway schema for inbound and outbound invoices.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InvoiceHeader" type="InvoiceHeaderType"/>
+				<xs:element name="InvoiceDetail" type="InvoiceDetailType" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="InvoiceDetailType">
+		<xs:annotation>
+			<xs:documentation>Contains detail line information from invoice doc</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="CorporateItemCode" minOccurs="0"/>
+			<xs:element name="ItemDescription" type="xs:string" default="" minOccurs="0" maxOccurs="5">
+				<xs:annotation>
+					<xs:documentation>This is the description of a warehoused item.  It contains the brand and description of the item.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ManufacturerItemID" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>identifier provided by the manufacturer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CustomerItemID" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>identifier provided by the customer. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UPCID" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>upc identifier for the item, could be a case upc or retial scan upc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrderQuantity" type="xs:decimal" default="0">
+				<xs:annotation>
+					<xs:documentation>Total number of units ordered.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShippedQuantity" type="xs:decimal" default="0"/>
+			<xs:element name="InvoiceQuantity" type="xs:decimal" default="0"/>
+			<xs:element name="QuantityUOM" type="xs:string" default=""/>
+			<xs:element name="CaseWeight" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>   Weight of a warehouse shipping unit (single case).
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WeightUOM" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="ItemVolume" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="VolumeUOM" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="UnitCost" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>unit cost of the item per unit quantity specified</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Amount" type="xs:decimal" default="0" minOccurs="0"/>
+						<xs:element name="PerQuantity" type="xs:decimal" default="0" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>indicates per quantity side of the amount.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DetailAllowances" type="AllowancesType" minOccurs="0" maxOccurs="5">
+				<xs:annotation>
+					<xs:documentation>Allowances recorded at invoice detail level.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PriceBracket" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A price schedule based on the number of cases that a retailer orders the greater the quantity ordered, the lower the price per case. Also called a volume or quantity discount</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PriceListNumber" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identification number assigned by a vendor to a price list</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RevisedPriceListNumber" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number assigned to revised or new issues of a price list</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ItemPackDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PackQuantity" type="xs:decimal" minOccurs="0"/>
+						<xs:element name="PackSize" type="xs:string" minOccurs="0"/>
+						<xs:element name="SizeUOM" type="xs:string" default="" minOccurs="0"/>
+						<xs:element name="WeightQuantity" type="xs:decimal" minOccurs="0"/>
+						<xs:element name="WeightUOM" type="xs:string" default="" minOccurs="0"/>
+						<xs:element name="VolumeQuantity" type="xs:decimal" minOccurs="0"/>
+						<xs:element name="VolumeUOM" type="xs:string" default="" minOccurs="0"/>
+						<xs:element name="Color" type="xs:string" default="" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceHeaderType">
+		<xs:annotation>
+			<xs:documentation>Containes invoice header level information like inv#, dt, remitto, bill to, totals..etc</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Document" type="DocumentType"/>
+			<xs:element ref="CorporationID"/>
+			<xs:element ref="DivisionID"/>
+			<xs:element name="Facility" type="FacilityType"/>
+			<xs:element name="VendorParty" type="PartyType" minOccurs="0" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>It can have information about Vendor, Vendor Sub Account or Warehouse Vendor Sub account.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="StatusType" minOccurs="0" maxOccurs="5"/>
+			<xs:element name="TotalAmount" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates the total amount of the object associated. This includes the Price and the total of all the charges, allowances and taxes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="QualifiedAmount" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Original invoice amount before discounts and charges.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BillToParty" type="PartyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identifies the party that the bill or invoice to be sent.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RemitToParty" type="PartyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identifies the party or location that the payment is to be remitted to or sent to.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShipToParty" type="PartyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identifies the ShipToParty for the document or the line. In a lot of cases, this is the same as the CustomerParty. In multi-organization purchasing, the CustomerParty may be different from the BuyerParty</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CarrierParty" minOccurs="0" maxOccurs="5">
+				<xs:annotation>
+					<xs:documentation>Idenitfies the party that serves as the carrier of the goods or services for the transaction.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="PartyType">
+							<xs:sequence>
+								<xs:element name="CarrierEquipment" type="CarrierEquipment" minOccurs="0" maxOccurs="10"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PurchaseOrderReference" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Purchase Orders associated with the Invoice</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="DocumentType">
+							<xs:sequence>
+								<xs:element name="MasterPurchaseOrder" type="DocumentType" minOccurs="0" maxOccurs="5">
+									<xs:annotation>
+										<xs:documentation>Master purchase order referenced in the vendor invoice.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="InvoiceAllowances" type="AllowancesType" minOccurs="0" maxOccurs="5"/>
+			<xs:element name="PaymentTerms" type="PaymentTermType" minOccurs="0" maxOccurs="5">
+				<xs:annotation>
+					<xs:documentation>Identifies the payment term for an Order or Invoice. Supports the abiility to specify an absolute due date, a number of days from a start date, a percent discount or an absolute discount. A common term like "Net30Days" is explicitly code as either a calculated DueDateTime or a PaymentTermsDateTime and NumberOfDays.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InstallmentAmount" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="InstallmentPercent" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Percenatge of invoice amount paid thru installment</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InstallmentGroup" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="InvoiceComments" default="" minOccurs="0" maxOccurs="5">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string" default=""/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TransportationTerms" type="TransportationTermType" minOccurs="0"/>
+			<xs:element name="TotalShippedQuantity" type="xs:decimal" default="0"/>
+			<xs:element name="QuantityUOM" type="xs:string" default=""/>
+			<xs:element name="TotalWeightAmount" type="xs:decimal" default="0"/>
+			<xs:element name="WeightUOM" type="xs:string" default="Lbs"/>
+			<xs:element name="TotalVolumeAmount" type="xs:decimal" default="0"/>
+			<xs:element name="VolumeUOM" type="xs:string" default="CuFt"/>
+			<xs:element name="TotalInvoiceAmount" type="xs:decimal" default="0"/>
+			<xs:element name="PriceBracket" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A price schedule based on the number of cases that a retailer orders the greater the quantity ordered, the lower the price per case. Also called a volume or quantity discount</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrderSizingFactor" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A product specification other than gross or net weight, or cubic feet for a line item or transaction used for order sizing and pricing purposes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RequestedShipDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Requested Ship Date/Pick up Date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RequestedDeliveryDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Delivery Requested on this Date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShipDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Actual Ship date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

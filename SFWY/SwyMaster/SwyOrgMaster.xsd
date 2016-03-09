@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Schema Owner: 	Safeway Inc
+   Date Created:      11 Jan 2016
+   Author:		Sai Nuthakki
+   Description: contains all Safeway Organization Master elements as a common schema to include.
+    Name: /SFWY/Global/SwyOrgMaster.xsd
+-->
+<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by Sai Nuthakki (Safeway, Inc.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+	<xs:element name="CorporationID" type="xs:string" default="001">
+		<xs:annotation>
+			<xs:documentation>A legally defined business entity. In our business terms these are Safeway Incorporated and its associates such as Canada Safeway Limited,
+ and various holding or financial companies.  Independent stores that  our warehouses service are also recorded as corporations.
+ Corporations are divided into divisions.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DistributionCenterID" type="xs:string" default="">
+		<xs:annotation>
+			<xs:documentation>Identifier for a Distribution Center.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DivisionID" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>Division Id is used with a corporation code to uniquely identify a division.
+ It is a subset of a corporation that is logically and practically manageable.
+Each division supports only one type of business, e.g., it may be retail stores, warehouses, or plants.
+It also maintains its own General Ledger. BUSINESS TYPE indicates the type of division, e.g., Retail, Wholesale, Administrative.
+ In the U.S., and going forward, the convention has been to use the same division number for retail and wholesale operations (with
+ business-type = retail). For instance, when supplying product (i.e. from a warehouse to a store), you have one division that supplies the product (the
+ warehouse's division), and one division that receives the product (the store's division). Often the supplying and receiving division are the                                                   same, but in some cases a warehouse may reside in a different division from the store it services. 
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="FacilityType">
+		<xs:annotation>
+			<xs:documentation> Contains data related to a facility like type, id, name.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="FacilityType" type="xs:string" default="">
+				<xs:annotation>
+					<xs:documentation>Type of the facility like, DC,  warehouse, Retail Store, Office building, manufacturing plant..etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FacilityID" type="xs:string" default="">
+				<xs:annotation>
+					<xs:documentation>A four character code that is used with corporation
+ and division to uniquely identify a facility. A facility may "belong" to
+ only one corporation and one division. A building may house one or more
+facilities. There are two categories for facilities:
+ 1) Operating facility
+ - actively supports the business of the Company
+ - is a distinct business operation within a building
+  - examples: office, processing plant, retail store, truck service
+ shop, or warehouse building  (A warehouse facility includes all warehouse departments that exist within a single building.)
+ - each type of division/business has a different set of possible types of operating facilities: i.e.,
+ - Retail: retail outlets and offices.
+- Wholesale: warehouse facilities, truck service shop, and offices.
+- Processing/Manufacturing: processing plants and offices.
+ 2) Non-operating Facility                                                     
+ - not currently being operated by the Company.
+ - facilities </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FacilityName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name of the facility. ex Tracy DC or Safeway store in Bollinger Canyon San Ramon</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParentFacilityId" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

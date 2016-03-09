@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by Sai Nuthakki (Safeway, Inc.) -->
+<xs:schema xmlns="http://collab.safeway.com/it/architecture/info/default.aspx" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" targetNamespace="http://collab.safeway.com/it/architecture/info/default.aspx" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+	<xs:include schemaLocation="../Global/SwyGlobalComponents.xsd"/>
+	<xs:element name="RemittanceAdvice">
+		<xs:annotation>
+			<xs:documentation source="http://www.openapplications.org/oagis/9">The purpose of the RemittanceAdvice Business Object Document is to provides a detailed breakdown of a payment amount.  It includes all credits, debits, discounts, adjustments taken on an invoice, and adjustment reason codes.  A payment can attach a Remittance Advice Notification.  Payment can be for products only, transportation, or other services.  
+
+The sme message can also be used to map application advice also.</xs:documentation>
+			<xs:documentation source="http://www.openapplications.org/oagis/9">The Process RemittanceAdvice sends the electronic form of a remittance advice document from a payer to a payee. It is usually executed when an outstanding accounts payable balance (credit or debit) exists. </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="RemittanceAdviceHeader" maxOccurs="10"/>
+				<xs:element ref="RemittanceAdviceLine" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RemittanceAdviceHeader" type="RemittanceAdviceHeaderType">
+		<xs:annotation>
+			<xs:documentation source="http://www.openapplications.org/oagis/9">The Remittance Advice Header contains information that applies to the entire remittance advice.  This Component is required.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="RemittanceAdviceLine" type="RemittanceAdviceLineType">
+		<xs:annotation>
+			<xs:documentation source="http://www.openapplications.org/oagis/9">To be entered.
+
+At least one occurrence of this Component is required for each occurrence of the Remittance Advice.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="RemittanceAdviceHeaderType">
+		<xs:sequence>
+			<xs:element name="RemittanceID" type="DocumentType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="EffectiveDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">This is the Date the associated object is made effective</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TransactionPurposeCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>To identify the purpose of the transaction for application advise. ex payment accepted, rejected..etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InitiatingParty" type="PartyType" minOccurs="0" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">Party initiating the payment to the forwarding or first agent. This can be the debtor (in a credit transfer), the creditor (in a direct debit) or a party that initiates the payment on behalf of the debtor or creditor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BankParty" type="PartyType" minOccurs="0" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>Identifies Payee Bank details or Receipient Bank Details.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BillToParty" type="PartyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">Identifies the party that the bill or invoice is to be sent. In most cases this is the same as the CustomerParty however there are many cases where the CustomerParty and the BillToParty will be different.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialParty" type="PartyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">Financial institution that receives the payment transaction from the account owner or authorised party and processes the instruction. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RemitToParty" type="PartyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">Identifies the party or location that the payment is to be remitted to or sent to.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TransactionHandleCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreditDebitCode" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identifies whether the amount is for credit or debit.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChequeInstruction" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">Information related to a cheque instruction. </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ChequeNumber" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Identifies the cheque number.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ChequeDate" type="xs:date" minOccurs="0"/>
+						<xs:element name="ChequeMaturityDate" type="xs:date" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Date when the draft becomes payble and when the debtors account is debited.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ChequeMemoFieldText" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Information that needs to be printed on the cheque, used by the payer to add miscellaneous information.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ChequeAmount" type="xs:decimal" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Amount written on the cheque for payment.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PaymentMethodCode" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">Is the payment method code for the associate entity. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentFormatCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="TotalAmount" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">Indicates the total amount of the object associated. This includes the Price and the total of all the charges, allowances and taxes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CurrencyCode" minOccurs="0"/>
+			<xs:element name="ExchangeRate" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="TransactionID" type="xs:string" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">Unique and unambiguous identification of a payment transaction, as assigned by any of the parties on the initiating side, which will be passed on throughout the entire end-to-end chain.   </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GSTId" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="Notes" default="" minOccurs="0" maxOccurs="10">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TotalNetPayAmount" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>total invoice net pay amount as per the remittance advise</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalGrossPayAmount" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>total invoice gross payment as per remittance advise</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalDiscountAmount" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Total invoice discount amount</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EffectiveEntryDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="BusinessFunctionCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="TraceTypeCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ReferenceNumber" minOccurs="0" maxOccurs="5">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ApplicationAdviseErrorDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ErrorCode" type="xs:string" minOccurs="0" maxOccurs="20"/>
+						<xs:element name="ErrorMessage" minOccurs="0" maxOccurs="20"/>
+						<xs:element name="ApplicationIdentifier" type="xs:string" minOccurs="0"/>
+						<xs:element name="BadDataElement" type="xs:string" minOccurs="0"/>
+						<xs:element name="RevisedDataElement" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RemittanceAdviceLineType">
+		<xs:sequence>
+			<xs:element name="LineNumber" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Line number of hte given line componenet within the document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvoiceTypeCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="InvoiceNumber" minOccurs="0"/>
+			<xs:element name="InvoiceDate" minOccurs="0"/>
+			<xs:element name="InvoiceLineAmount" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="http://www.openapplications.org/platform/1">Amount of payment</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:decimal">
+							<xs:attribute name="QualifierType" type="xs:string" default=""/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PurchaseOrderNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="PurchaseOrderDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="PurchaseOrderReleaseNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Version number of the PO</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvoiceItemQuantity" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Shipped Item quantity to which invoice was submitted</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:decimal">
+							<xs:attribute name="QualifierType" type="xs:string" default=""/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="InvoiceNetPayAmount" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="InvoiceGrossPayAmount" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="InvoiceDiscountAmount" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="GSTAmount" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="VoucherNumber" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="ProcessLevelCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ReasonCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ReasonDescription" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="Notes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

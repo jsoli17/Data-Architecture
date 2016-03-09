@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Schema Owner: 	Safeway Inc
+   Date Created:      11 Jan 2016
+   Author:		Sai Nuthakki
+   Description: contains all Safeway Product Master elements as a common schema to include.
+   Name: /SFWY/Global/SwyProductMaster.xsd
+-->
+<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by Sai Nuthakki (Safeway, Inc.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+	<xs:element name="CorporateItemCode" type="xs:decimal" default="0">
+		<xs:annotation>
+			<xs:documentation>This is the wholesale item identifier, which is usually unique across the enterprise and quaranteed to be unique within a country. For Canada, the first 5 digits is the product class code (PROD_CLASS) and the last 3 are system generated sequence numbers.  For US, the first four digits are the SMIC Group and Category codes and the last four digits are system generated sequence numbers.A SSIMS generated code that identifies an item across divisions. A CIC always has 1 UPC, but may have more added to it.  CIC is the main number used in SIMS to work with items. More than one CIC may be assigned to an UPC.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>

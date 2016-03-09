@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Schema Owner: 	Safeway Inc
+   Date Created:      12 Jan 2016
+   Author:		Sai Nuthakki
+   Description: contains commonly used Safeway Purchase order schema.
+   Name: /SFWY/Nouns/SwyPurchaseOrder.xsd
+-->
+<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by Sai Nuthakki (Safeway, Inc.) -->
+<xs:schema xmlns:oa="http://www.openapplications.org/oagis/9" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://collab.safeway.com/it/architecture/info/default.aspx" xmlns:altova="http://www.altova.com/xml-schema-extensions" targetNamespace="http://collab.safeway.com/it/architecture/info/default.aspx" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="../Global/SwyGlobalComponents.xsd"/>
+	<xs:include schemaLocation="../SwyMaster/SwyMasterComponents.xsd"/>
+	<xs:element name="SwyPurchaseOrder">
+		<xs:annotation>
+			<xs:documentation>Safeway Standard Purchase Order. The purpose of the PurchaseOrder Business Object Document is to communicate an order to purchase goods from a buyer to a supplier. The PurchaseOrder carries information to and from the buyer and supplier. The PurchaseOrder is a legally binding document once both Parties agree to the contents and the specified terms and conditions of the order.  </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PurchaseOrderHeader" type="PurchaseOrderHeaderType"/>
+				<xs:element name="PurchaseOrderDetail" type="PurchaseOrderDetailType" maxOccurs="999"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="PurchaseOrderDetailType">
+		<xs:annotation>
+			<xs:documentation>Contains data at Purchase Order Line item level, ie at ordered item level.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="CorporationID"/>
+			<xs:element ref="DivisionID"/>
+			<xs:element name="Facility" type="FacilityType"/>
+			<xs:element ref="PurchaseOrderNbr"/>
+			<xs:element name="LineNbr" type="xs:integer" default="0"/>
+			<xs:element ref="CorporateItemCode"/>
+			<xs:element name="ItemDescription" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the description of a warehoused item.  It contains the brand and description of the item.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ManufacturerItemID" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>identifier provided by the manufacturer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CustomerItemID" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>identifier provided by the customer. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UPCID" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>upc identifier for the item, could be a case upc or retial scan upc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrderQuantity" type="xs:decimal" default="0">
+				<xs:annotation>
+					<xs:documentation>Total number of units ordered.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UnitOfMeasurement" type="xs:string" default=""/>
+			<xs:element name="CaseWeight" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>   Weight of a warehouse shipping unit (single case).
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PackUnitQuantity" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The quantity of shelf units in a warehouse unit, or pack for the item at 
+a corporate level.  e.g. 24 shelf units in a warehouse case.             
+All distribution centers will use this to keep their "24 packs"          
+on the same item codes.  Number of consumer units per warehouse shipping 
+pack (or store receiving pack for DSD) with Descriptive Size, appears on 
+Purchase Orders for warehoused items.                                    
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VendorConvFactor" type="xs:decimal" default="1" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Factor used to convert a vendor pack to a warehouse pack.                    
+eg: If a Vendor's Master case is a 72 Pack and we want to ship 12's to Stores
+then we have a warehouse Pack = 12 and a VEND-CONV-FCTR = 6.
+                             
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ItemShelfUnitSize" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> The generic retail size of goods. It may be actual size
+ Example: 340 g or a unit type (packet).                           
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VendorUnitCostAmount" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the base cost charged by a vendor for the product for a vendor 
+unit. It does not include allowances or discounts. VEND-CONV-FCTR is   
+used to convert the cost from a vendor pack to a warehouse pack.       
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UnitPrice" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>unit price of the item per unit quantity specified</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Amount" type="xs:decimal" default="0" minOccurs="0"/>
+						<xs:element name="PerQuantity" type="xs:decimal" default="0" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>indicates per quantity side of the amount.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PalletHeight" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of layers of cases on a vendors pallet.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PalletLayerUnits" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of units that make up a layer on a vendors pallet.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Allowances" type="AllowancesType" minOccurs="0" maxOccurs="10"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PurchaseOrderDt" type="xs:date">
+		<xs:annotation>
+			<xs:documentation>Date on which PO was created</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="PurchaseOrderHeaderType">
+		<xs:annotation>
+			<xs:documentation>Contains all header level information of a Purchase Order.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Document" type="DocumentType"/>
+			<xs:element ref="CorporationID"/>
+			<xs:element ref="DivisionID"/>
+			<xs:element name="Facility" type="FacilityType" maxOccurs="unbounded"/>
+			<xs:element ref="DistributionCenterID" minOccurs="0"/>
+			<xs:element ref="PurchaseOrderNbr">
+				<xs:annotation>
+					<xs:documentation>System generated id that uniquely represent a purchase order document at division level.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="StatusType" maxOccurs="5"/>
+			<xs:element ref="PurchaseOrderDt"/>
+			<xs:element name="BuyerParty" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Party responsible for ordering the quantity. It could be a Buyer, Forecaster or any other party.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="PartyType">
+							<xs:sequence>
+								<xs:element name="BuyerFacility" type="FacilityType" minOccurs="0"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ShipToParty" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Final destination of the goods shipped.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="PartyType">
+							<xs:sequence>
+								<xs:element name="ShipToFacility" type="FacilityType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="VendorParty" type="PartyType" minOccurs="0" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>It can have information about Vendor, Vendor Sub Account or Warehouse Vendor Sub account.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SupplierParty" type="PartyType" minOccurs="0"/>
+			<xs:element name="PurchaseOrderCreateDt" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="PurchaseOrderCreatedBy" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="ForeignPurchaseOrderNumber" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="PurchaseOrderReleaseNbr" type="xs:string" default="0" minOccurs="0"/>
+			<xs:element name="TransportationTerms" type="TransportationTermType" minOccurs="0"/>
+			<xs:element name="TransportationMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="CarrierName" type="xs:string" minOccurs="0"/>
+			<xs:element name="CarrierEquipment" type="CarrierEquipment" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PurchaseOrderReferenceID" type="DocumentType" minOccurs="0" maxOccurs="10">
+				<xs:annotation>
+					<xs:documentation>conatins associated master PO or customer PO or Foreign PO or any other related PO ID with type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PurchaseOrderComments" minOccurs="0" maxOccurs="30">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PurchaseOrderInstructions" minOccurs="0" maxOccurs="30">
+				<xs:annotation>
+					<xs:documentation>Instructions to vendors and suppliers</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>either deivery instructions or warehouse instructions or any other type of instructions.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PurchaseOrderNotes" minOccurs="0" maxOccurs="30">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string" default=""/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ShippingInstructions" minOccurs="0" maxOccurs="30">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PalletExchange" type="PalletExchangeType" minOccurs="0"/>
+			<xs:element name="LumperInstructions" type="LumperType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Instructions to the lumpers who unload and restack the goods</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LocationAppointment" type="ReceivingAppointmentType" minOccurs="0"/>
+			<xs:element name="UnitLoad" type="xs:string" minOccurs="0"/>
+			<xs:element name="RequestedShipDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date and time on which delivery of shipment is required by the buyer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PromisedShipDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Promised ship date time by the vendor/supplier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PromisedDeliveryDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Promised date on which the goods to be deliverred to the customer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EarliestShipDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Earliest possible date for the shipment</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentTerms" minOccurs="0" maxOccurs="5">
+				<xs:annotation>
+					<xs:documentation>Identifies the payment term for an Order or Invoice. Supports the abiility to specify an absolute due date, a number of days from a start daye, a percent discount or an absolute discount. A common term like "Net30Days" is explicitly code as either a calculated DueDateTime or a PaymentTermsDateTime and NumberOfDays.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="PaymentTermType"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FreightAllowanceTypeCd" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>  Indicates how the freight allowance is calculated.  An allowance is  
+ some form of moneys given from the vendor to subsidize the cost.     
+ Blank - No allowance.
+ "C"   - per case rates.     
+ "W"   - per hundredweight rate.  
+ "D"   - flat dollar.   
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FreightAllowanceAmount" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>   This is the rate of the freight allowance. This allowance is offered to  us since they do not deliver the goods to our warehouse. 
+   If freight allowance type is D - Flat Dollar, this amount field will be
+ a whole dollar value and must be multiplied by 100 when reading or
+ divided by 100 when a value is entered.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FreightAllowanceDescription" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="FreightChargeAmount" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This is the rate of the Freight Charge. This is the amount that is   
+charged us to have produce delivered to our warehouse from a Vendor. A Freight Charge is usually from an outside trucking company. Vendors
+usually offer a Freight Allowance to offset the cost of delivery.  
+If the freight charge type is D - flat dollar, this Amt  field will be a whole dollar value  and must be   multiplied by 100 when reading, or divided  by 00 when  entering a value. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FreightChargeTypeCd" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> Indicates how the freight charge is calculated.  A charge is an 
+additional cost incurred by the receiving company when an item is  
+shipped from a vendor.                                                                     
+Blank - No allowance.     
+"C"   - per case rates.  
+"W"   - per hundredweight rate. 
+"D"   - flat dollar.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FreightChargeDescription" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="PriceBreakAmount" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The vendor price break rate calculated at purchase order
+generation time.                                        
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PriceBreakType" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field determines whether the price break is off-invoice 
+or a debit amount.                                           
+                                                             
+"O" = off-invoice                                            
+"D" = debit amount                                           
+" " = no price break for this P.O.                           
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PriceBreakExcludeIndicator" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This field determines whether to include/exclude the price 
+ break in item billing cost.                                
+                                                            
+ "N" = include in item billing cost                         
+ "Y" = exclude from item billing cost                       
+ " " = no price break for this P.O.                         
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TradeDiscountPercent" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Trade discount is expressed as a percentage. This
+is a discount the Vendor offers for all items attached to the Warehouse Vendor Sub Account.  
+</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TradeDiscountdescription" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="BackHaulIndicator" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is used to determine if backhaul sheets are to be printed.                           Valid values are: 'S' - Safeway trucking                        
+'Y' - Backhaul via Safeway trucking                             
+' ' - Outside Carrier                                           
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalOrderQuantity" type="xs:decimal" default="0"/>
+			<xs:element name="QuantityUOM" type="xs:string" default=""/>
+			<xs:element name="TotalWeightAmount" type="xs:decimal" default="0"/>
+			<xs:element name="WeightUOM" type="xs:string" default="Lbs"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PurchaseOrderNbr" type="xs:string" default="">
+		<xs:annotation>
+			<xs:documentation>Unique number to identify a purchase order with in an organization.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 (x64) (http://www.altova.com) by Sai Nuthakki (Safeway, Inc.) -->
+<!--
+   Schema agency: 	Safeway Inc
+   Date:                11 Jan 2016
+   Author:		Sai Nuthakki
+   Description: contains all Safeway Global Components as a common schema to include.
+   Name: /SFWY/Global/SwyGlobalComponents.xsd
+-->
+<xs:schema xmlns="http://collab.safeway.com/it/architecture/info/default.aspx" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" targetNamespace="http://collab.safeway.com/it/architecture/info/default.aspx" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+	<xs:complexType name="StatusType">
+		<xs:annotation>
+			<xs:documentation>conatins data about various types of status codes.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code" default="" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="EffectiveDateTime" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AddressType">
+		<xs:annotation>
+			<xs:documentation>to identify the type of address of a party or facilty</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AddressTypeCd" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>classifies the type of address like billing, shipto, pickup or corporate, residential..etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AddressLine1Txt" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="AddressLine2Txt" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="CityNm" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="StateCd" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="ZipCd" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="CountryCd" type="xs:string" default="" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PhoneType">
+		<xs:annotation>
+			<xs:documentation>common object used to identify the usage type of phone like business, home</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AreaCode" type="xs:integer" minOccurs="0"/>
+			<xs:element name="PhoneNumber" type="xs:integer" minOccurs="0"/>
+			<xs:element name="ExtensionNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="CountryCode" type="xs:integer" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="TypeCode" type="xs:string" use="optional" default="">
+			<xs:annotation>
+				<xs:documentation>Business/Mobile/Home/Fax</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PrimaryFlag" type="xs:boolean" use="optional" default="0"/>
+	</xs:complexType>
+	<xs:complexType name="PartyType">
+		<xs:annotation>
+			<xs:documentation>Common object used to identify various business parties like, customer, shipper, vendor, bilto, ship to..etc</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PartyTypeCd" type="xs:string" minOccurs="0"/>
+			<xs:element name="PartyName" type="xs:string" minOccurs="0"/>
+			<xs:element name="PartyId" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Issuer" type="xs:string" default=""/>
+							<xs:attribute name="IdentificationType" type="xs:string" default="">
+								<xs:annotation>
+									<xs:documentation>Identification type of the party. ex EMP Nbr, Facility Nbr, DUNS Nbr, EDI Received id, EIN Nbr, Drivers License Nbr</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PartyAddress" type="AddressType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ContactName" default="" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string" default=""/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ContactPhone" type="PhoneType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Email" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentType">
+		<xs:annotation>
+			<xs:documentation>Provides the Identifier(s) of the document being communicated.
+
+Uniquily identifies a Document within an organization. Typically there is only an ID for a document within one system. However, with the use of different business applications there maybe different ids assigned to the same document within an organization from the different systems and in the case of B2B transactions different businesses may have different Identifiers for the same document. 
+
+This construct is designed to allow for these different identifications.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DocumentID" type="xs:string" default="0"/>
+			<xs:element name="AlternateDocumentID" type="xs:string" minOccurs="0"/>
+			<xs:element name="DocumentName" type="xs:string" default="PurchaseOrder" minOccurs="0"/>
+			<xs:element name="DocumentDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Dae and time the document( PO or Invoice or any other) created.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" default="" minOccurs="0" maxOccurs="5">
+				<xs:annotation>
+					<xs:documentation>Description of the document. ex safeway purchase order, safeway invoice..etc</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string" default=""/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Note" default="" minOccurs="0" maxOccurs="5">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Type" type="xs:string" default=""/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CarrierEquipment">
+		<xs:annotation>
+			<xs:documentation>Contains carrier equipment details like container details, tractor details, or any other</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CarrierTransportationMethodCd" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="CarrierCd" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="CarrierStandardCd" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="EquipmentNumber" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="Routing" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="StatusCode" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>carrier transportation status code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransportationTermType">
+		<xs:annotation>
+			<xs:documentation>When a seller ships something via common to a buyer in accordance with the Uniform Commerical Code and international legal agreements, you must specify a particular "phrase" that states who assumes the risk of shipment, who is responsible for loading and unloading the goods, where ownership or title to the goods passes, who paid or pays the carrirer, etc. Examples of these "phrases" include: - "FOB Origin Prepaid and Add" (Free On Board - no cost for loading, title passes at seller's dock, seller prepaid freight cost and delivery insurance, seller will freight costs to cost of goods) - "FOB Destination" or "FOB Destination Prepaid" (Free On Board - no cost for loading, title passes at buyer's dock, seller prepaid freight cost and delivery insurance)  In software applications, this phrase is commonly split into two coded pieces, a "legal terms" risk and responsibility component for use with common carriers (FOB Destination) and some kind of qualifying component (Prepaid and Add).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IncotermsCode" type="xs:string" default="FOB" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Is a contractual code used to describe the point where delivery occurs (goods ownership is transferred) in a contract of sale.  It identifies the rights and obligations of each partner  (supplier, carrier and customer) in the transaction and may specify the requirements to assume ownership (i.e. paying for the cost of the goods and/or transportation).
+
+The United Nations Trade Facilitation Information Exchange (UN/TraFIX) has established the following codes (INCOTERMS 2010) for use in international trade. (See http://www.unece.org/cefact/recommendations/rec_index.htm).  These terms may also be found in the United States Uniform Commercial Code (UCC).
+
+EXAMPLES 
+General transport	
+EXW - Ex Works ... (named place) 
+FCA - Free Carrier ... (named place)
+CPT - Carriage Paid ... (named place of destination)
+CIP - Carriage and Insurance Paid To ... (named place of destination)
+DAT - Delivered at Terminal
+DAP - Delivered at Place ... (named place of destination)
+DDP - Delivered Duty Paid ... (destination place)
+Water transportation
+FAS - Free Along Ship ... (named port of shipment)
+FOB - Free On Board ... (named port of shipment)
+CFR - Cost and Freight ... (named port of destination)
+CIF - Cost, Insurance and Freight ... (named port of destination)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FreighttermCode" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Describes how the freight cost for a shipment of goods should be billed. EXAMPLES:  Prepaid, Collect, Third Party, Prepaid and Add, Consignee Billed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PlaceOfOwnershipTransferLocation" type="PartyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Location where ownership of goods change from pne party to another party. Ex FOB point</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" default="" minOccurs="0" maxOccurs="5"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReceivingAppointmentType">
+		<xs:annotation>
+			<xs:documentation>Appointment details for goods receiving at warehuse or DC or a store</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AppointmentCode" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="AppointmentDateTime" type="xs:dateTime" minOccurs="0" maxOccurs="2"/>
+			<xs:element name="AppointmentNotes" type="xs:string" default="" minOccurs="0" maxOccurs="10"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LumperType">
+		<xs:annotation>
+			<xs:documentation>Contains lumper instructions either from a consignee or shipper. A lumper will unload the freight from a trailer and break down the pallets into smaller bundles if required per the receiver's instructions. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LumperMessageCode" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="LumperMessage" type="xs:string" default="" minOccurs="0" maxOccurs="10"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PalletExchangeType">
+		<xs:annotation>
+			<xs:documentation>Pallet exchange instructions between the buyer and seller</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PalletExchangeCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="PalletExcahngeInstructions" type="xs:string" minOccurs="0" maxOccurs="10"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentTermType">
+		<xs:annotation>
+			<xs:documentation>Identifies the payment term for an Order or Invoice. Supports the abiility to specify an absolute due date, a number of days from a start daye, a percent discount or an absolute discount. A common term like "Net30Days" is explicitly code as either a calculated DueDateTime or a PaymentTermsDateTime and NumberOfDays.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PaymentTermCode" type="xs:string" default="" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates the code type of payment terms.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" default="" minOccurs="0" maxOccurs="5"/>
+			<xs:element name="Term" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="BasisCode" type="xs:string" default="" minOccurs="0"/>
+						<xs:element name="BasisDate" type="xs:dateTime" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Date and time when payment terms go into effective.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DueDateQualifierCode" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Qualifies the due date, ex mail date, receipt by date, electronics fund transfer settelement date or funds deposit by date.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DueDateTime" type="xs:dateTime" minOccurs="0"/>
+						<xs:element name="Duration" type="xs:decimal" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The number of days in which the net amount of the invoice is due for   
+payment. NET DAYS is one of the vendor terms elements.   
+It must be greater then the cash discount days.                        
+</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DiscountPercent" type="xs:decimal" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>indicates the percentage of discount available against a price.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DiscountDays" type="xs:decimal" default="0" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Indicates the number of days the percentage cash discount is available.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DicountType" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Indicates the type of cash discount</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DiscountDueDate" type="xs:dateTime" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Date till term discount is valid</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DiscountDueAmount" type="xs:decimal" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Amount due after term dicount. Suppose original invoice amount is $100, and discount percent is 10%, them DiscountDueAmount will be $90 and Discount Amount will be $10.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DiscountAmount" type="xs:decimal" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Amount discounted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TermNotes" type="xs:string" default="" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Type" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="AllowancesType">
+		<xs:annotation>
+			<xs:documentation>contains various attributes related to vendor allowances.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AllowanceMethod" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="AllowanceCode" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="BasisAmount" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Base amount from which the allowance is derived</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BasisQuantity" type="xs:decimal" default="0" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Base quantity for which allwance amount is calculated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="QuantityUOM" type="xs:string" default="" minOccurs="0"/>
+			<xs:element name="AllowanceRate" type="xs:decimal" default="0" minOccurs="0"/>
+			<xs:element name="AllowanceAmount" type="xs:decimal" default="0" minOccurs="0"/>
+			<xs:element name="AllowancePercent" type="xs:decimal" default="0" minOccurs="0"/>
+			<xs:element name="AllowanceDescription" type="xs:string" default="" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="TypeCode" type="xs:string" default=""/>
+	</xs:complexType>
+</xs:schema>
